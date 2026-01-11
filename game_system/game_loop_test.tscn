@@ -1,0 +1,150 @@
+[gd_scene load_steps=2 format=3 uid="uid://b1ybjdeevuajl"]
+
+[ext_resource type="Script" uid="uid://bp6bisu18k57g" path="res://game_system/game_loop_test.gd" id="1_q816w"]
+
+[node name="GameLoopTest" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_q816w")
+
+[node name="HSplitContainer" type="HSplitContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+split_offset = -400
+
+[node name="LeftPanel" type="PanelContainer" parent="HSplitContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/LeftPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer/LeftPanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="TitleLabel" type="Label" parent="HSplitContainer/LeftPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "GameLoop Test"
+
+[node name="HSeparator" type="HSeparator" parent="HSplitContainer/LeftPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="StartButton" type="Button" parent="HSplitContainer/LeftPanel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "ゲームスタート"
+
+[node name="PauseButton" type="Button" parent="HSplitContainer/LeftPanel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+toggle_mode = true
+text = "一時停止"
+
+[node name="HSeparator2" type="HSeparator" parent="HSplitContainer/LeftPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="IntervalLabel" type="Label" parent="HSplitContainer/LeftPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "自動更新間隔 (秒)"
+
+[node name="IntervalSpinBox" type="SpinBox" parent="HSplitContainer/LeftPanel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+min_value = 0.1
+max_value = 10.0
+step = 0.1
+value = 1.0
+
+[node name="HSeparator3" type="HSeparator" parent="HSplitContainer/LeftPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="StepButton" type="Button" parent="HSplitContainer/LeftPanel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "1ステップ進める"
+
+[node name="RightPanel" type="HSplitContainer" parent="HSplitContainer"]
+layout_mode = 2
+
+[node name="StatePanel" type="PanelContainer" parent="HSplitContainer/RightPanel"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/RightPanel/StatePanel"]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer/RightPanel/StatePanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="StateTitleLabel" type="Label" parent="HSplitContainer/RightPanel/StatePanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "ゲーム状態"
+
+[node name="HSeparator" type="HSeparator" parent="HSplitContainer/RightPanel/StatePanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HSplitContainer/RightPanel/StatePanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="StateLabel" type="RichTextLabel" parent="HSplitContainer/RightPanel/StatePanel/MarginContainer/VBoxContainer/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+bbcode_enabled = true
+text = "ゲーム未開始"
+fit_content = true
+
+[node name="LogPanel" type="PanelContainer" parent="HSplitContainer/RightPanel"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="HSplitContainer/RightPanel/LogPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HSplitContainer/RightPanel/LogPanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 5
+
+[node name="LogTitleLabel" type="Label" parent="HSplitContainer/RightPanel/LogPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "ログ"
+
+[node name="HSeparator" type="HSeparator" parent="HSplitContainer/RightPanel/LogPanel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="LogTextEdit" type="TextEdit" parent="HSplitContainer/RightPanel/LogPanel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+placeholder_text = "ログがここに表示されます..."
+editable = false
+
+[connection signal="pressed" from="HSplitContainer/LeftPanel/MarginContainer/VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="toggled" from="HSplitContainer/LeftPanel/MarginContainer/VBoxContainer/PauseButton" to="." method="_on_pause_button_toggled"]
+[connection signal="value_changed" from="HSplitContainer/LeftPanel/MarginContainer/VBoxContainer/IntervalSpinBox" to="." method="_on_interval_spin_box_value_changed"]
+[connection signal="pressed" from="HSplitContainer/LeftPanel/MarginContainer/VBoxContainer/StepButton" to="." method="_on_step_button_pressed"]
