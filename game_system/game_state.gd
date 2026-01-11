@@ -32,6 +32,8 @@ var players: Array[PlayerState]
 var deck: DeckState
 ## 自宅
 var home: HomeState
+## スキルスタック（スキル解決の状態）
+var skill_stack: SkillStackState
 ## ゲーム終了フラグ
 var is_game_over: bool = false
 ## 勝者（ゲーム終了時に設定、-1は未決定）
@@ -47,6 +49,7 @@ func _init() -> void:
 	players = [PlayerState.new(0), PlayerState.new(1)]
 	deck = DeckState.new()
 	home = HomeState.new()
+	skill_stack = SkillStackState.new()
 
 
 func get_current_player_state() -> PlayerState:
@@ -86,6 +89,17 @@ func duplicate_state() -> GameState:
 	copy.players = [players[0].duplicate_state(), players[1].duplicate_state()]
 	copy.deck = deck.duplicate_state()
 	copy.home = home.duplicate_state()
+	copy.skill_stack = skill_stack.duplicate_state()
 	copy.is_game_over = is_game_over
 	copy.winner = winner
 	return copy
+
+
+## スキル解決中かどうか
+func is_resolving_skills() -> bool:
+	return skill_stack.phase != SkillStackState.Phase.IDLE
+
+
+## プレイヤーの選択待ちかどうか
+func is_waiting_player_choice() -> bool:
+	return skill_stack.is_waiting_choice()

@@ -32,6 +32,15 @@ enum Type {
 	LIVE_CHECK,          # ライブチェック
 	SHOWDOWN,            # ショウダウン
 
+	# スキル関連
+	SKILL_ACTIVATE,      # スキルを発動（スタックに積む）
+	SKILL_RESOLVE,       # スキルを解決
+	SKILL_CANCEL,        # スキルをキャンセル
+	SKILL_EFFECT,        # スキル効果を適用
+	SKILL_TRIGGER_CHECK, # 常時スキルのトリガーチェック
+	CHOICE_REQUEST,      # プレイヤーに選択を要求
+	CHOICE_ANSWER,       # プレイヤーが選択に回答
+
 	# ゲーム終了
 	GAME_END             # ゲーム終了
 }
@@ -142,3 +151,75 @@ static func showdown(winner: int, player1_rank: GameState.Rank, player2_rank: Ga
 
 static func game_end(winner: int) -> GameAction:
 	return GameAction.new(Type.GAME_END, -1, {"winner": winner})
+
+
+# スキル関連のファクトリメソッド
+
+static func skill_activate(
+	player_id: int,
+	skill_id: String,
+	source_card_id: String,
+	instance_id: int
+) -> GameAction:
+	return GameAction.new(Type.SKILL_ACTIVATE, player_id, {
+		"skill_id": skill_id,
+		"source_card_id": source_card_id,
+		"instance_id": instance_id
+	})
+
+
+static func skill_resolve(instance_id: int) -> GameAction:
+	return GameAction.new(Type.SKILL_RESOLVE, -1, {
+		"instance_id": instance_id
+	})
+
+
+static func skill_cancel(instance_id: int, cancelled_by_instance_id: int = -1) -> GameAction:
+	return GameAction.new(Type.SKILL_CANCEL, -1, {
+		"instance_id": instance_id,
+		"cancelled_by": cancelled_by_instance_id
+	})
+
+
+static func skill_effect(
+	instance_id: int,
+	effect_index: int,
+	effect_type: SkillEffect.Type,
+	effect_result: Dictionary = {}
+) -> GameAction:
+	return GameAction.new(Type.SKILL_EFFECT, -1, {
+		"instance_id": instance_id,
+		"effect_index": effect_index,
+		"effect_type": effect_type,
+		"result": effect_result
+	})
+
+
+static func skill_trigger_check(trigger_condition: SkillState.TriggerCondition) -> GameAction:
+	return GameAction.new(Type.SKILL_TRIGGER_CHECK, -1, {
+		"trigger_condition": trigger_condition
+	})
+
+
+static func choice_request(
+	player_id: int,
+	request_id: int,
+	choice_type: ChoiceRequestState.Type,
+	params: Dictionary = {}
+) -> GameAction:
+	return GameAction.new(Type.CHOICE_REQUEST, player_id, {
+		"request_id": request_id,
+		"choice_type": choice_type,
+		"params": params
+	})
+
+
+static func choice_answer(
+	player_id: int,
+	request_id: int,
+	answer: Variant
+) -> GameAction:
+	return GameAction.new(Type.CHOICE_ANSWER, player_id, {
+		"request_id": request_id,
+		"answer": answer
+	})
